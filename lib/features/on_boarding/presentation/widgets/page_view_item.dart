@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:fruit_hub/core/utils/app_images.dart';
 import 'package:svg_flutter/svg.dart';
 
 class PageViewItem extends StatelessWidget {
@@ -33,42 +32,32 @@ class PageViewItem extends StatelessWidget {
                 right: 0,
                 left: 0,
                 child: SvgPicture.asset(
-                    image,
-                  ),
+                  image,
+                ),
               ),
-              Padding(
-                padding: const EdgeInsets.all(16),
-                child: Text('تخط',),
+              const Padding(
+                padding: EdgeInsets.all(16),
+                child: Text(
+                  'تخط',
+                ),
               ),
             ],
           ),
         ),
-        // const SizedBox(
-        //   height: 40,
-        // ),
-
-        // SvgPicture.asset(
-        //   image,
-        //   height: 250,
-        // ),
-        // const SizedBox(
-        //   height: 20,
-        // ),
-        // title,
-        // const SizedBox(
-        //   height: 10,
-        // ),
-        //  Padding(
-        //   padding:const EdgeInsets.symmetric(horizontal: 20),
-        //   child: Text(
-        //  subtitle,
-        //     textAlign: TextAlign.center,
-        //     style:const TextStyle(
-        //       fontSize: 16,
-        //       color: Colors.grey,
-        //     ),
-        //   ),
-        // ),
+        const SizedBox(
+          height: 60,
+        ),
+        title,
+        const SizedBox(
+          height: 24,
+        ),
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 16.0),
+          child: Text(
+            subtitle,
+            textAlign: TextAlign.center,
+          ),
+        ),
       ],
     );
   }
