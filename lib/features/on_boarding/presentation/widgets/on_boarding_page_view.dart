@@ -9,13 +9,13 @@ class OnBoardingPageView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return PageView(
-      children: [
+      children: const [
         PageViewItem(
           image: Assets.imagesPageViewItem1Image,
           backgroundImage: Assets.imagesPageViewItem1BackgroundImage,
           title: Row(
             mainAxisAlignment: MainAxisAlignment.center,
-            children: const [
+            children: [
               Text(
                 'مرحبًا بك في',
                 style: TextStyle(
@@ -45,6 +45,22 @@ class OnBoardingPageView extends StatelessWidget {
           subtitle:
               'اكتشف تجربة تسوق فريدة مع FruitHUB. استكشف مجموعتنا الواسعة من الفواكه الطازجة الممتازة واحصل على أفضل العروض والجودة العالية.',
         ),
+        PageViewItem(
+            image: Assets.imagesPageViewItem2Image,
+            backgroundImage: Assets.imagesPageViewItem2BackgroundImage,
+            title: Text(
+              'ابحث وتسوق',
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                color: Color(0xFF0C0D0D),
+                fontSize: 23,
+                fontFamily: 'Cairo',
+                fontWeight: FontWeight.w700,
+                height: 0,
+              ),
+            ),
+            subtitle:
+                'نقدم لك أفضل الفواكه المختارة بعناية. اطلع على التفاصيل والصور والتقييمات لتتأكد من اختيار الفاكهة المثالية'),
       ],
     );
   }
