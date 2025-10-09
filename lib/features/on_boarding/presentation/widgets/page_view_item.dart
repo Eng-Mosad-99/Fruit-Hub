@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:fruit_hub/core/utils/app_images.dart';
 import 'package:svg_flutter/svg.dart';
 
 class PageViewItem extends StatelessWidget {
@@ -16,10 +17,36 @@ class PageViewItem extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
+        SizedBox(
+          height: MediaQuery.sizeOf(context).height * 0.5,
+          width: double.infinity,
+          child: Stack(
+            children: [
+              Positioned.fill(
+                child: SvgPicture.asset(
+                  backgroundImage,
+                  fit: BoxFit.fill,
+                ),
+              ),
+              Positioned(
+                bottom: 0,
+                right: 0,
+                left: 0,
+                child: SvgPicture.asset(
+                    image,
+                  ),
+              ),
+              Padding(
+                padding: const EdgeInsets.all(16),
+                child: Text('تخط',),
+              ),
+            ],
+          ),
+        ),
         // const SizedBox(
         //   height: 40,
         // ),
-       
+
         // SvgPicture.asset(
         //   image,
         //   height: 250,
@@ -42,7 +69,6 @@ class PageViewItem extends StatelessWidget {
         //     ),
         //   ),
         // ),
-      
       ],
     );
   }
