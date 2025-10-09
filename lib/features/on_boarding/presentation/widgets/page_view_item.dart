@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:fruit_hub/constants.dart';
 import 'package:svg_flutter/svg.dart';
 
 class PageViewItem extends StatelessWidget {
@@ -52,7 +53,9 @@ class PageViewItem extends StatelessWidget {
           height: 24,
         ),
         Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16.0),
+          padding: const EdgeInsets.symmetric(
+            horizontal: kHorizontalPadding,
+          ),
           child: Text(
             subtitle,
             textAlign: TextAlign.center,
