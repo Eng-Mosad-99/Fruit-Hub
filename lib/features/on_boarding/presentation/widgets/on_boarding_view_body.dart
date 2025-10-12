@@ -16,7 +16,7 @@ class _OnBoardingViewBodyState extends State<OnBoardingViewBody> {
   late PageController pageController;
   int currentPage = 0;
   @override
-  void initState() { 
+  void initState() {
     super.initState();
     pageController = PageController();
     pageController.addListener(() {
@@ -29,12 +29,15 @@ class _OnBoardingViewBodyState extends State<OnBoardingViewBody> {
     super.dispose();
     pageController.dispose();
   }
+
   @override
   Widget build(BuildContext context) {
     return Column(
       children: [
-        const Expanded(
-          child: OnBoardingPageView(),
+        Expanded(
+          child: OnBoardingPageView(
+            controller: pageController,
+          ),
         ),
         DotsIndicator(
           dotsCount: 2,
@@ -46,7 +49,7 @@ class _OnBoardingViewBodyState extends State<OnBoardingViewBody> {
         ),
         const SizedBox(height: 30),
         Padding(
-          padding:  const EdgeInsets.symmetric( 
+          padding: const EdgeInsets.symmetric(
             horizontal: kHorizontalPadding,
           ),
           child: CustomButtons(
