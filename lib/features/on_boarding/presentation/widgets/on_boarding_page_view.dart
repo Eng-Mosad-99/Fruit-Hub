@@ -12,7 +12,7 @@ class OnBoardingPageView extends StatelessWidget {
       controller: controller,
       children: [
         PageViewItem(
-          isVisible: controller.page!.round() == 0,
+          isVisible:(controller.hasClients? controller.page!.round():0) == 0,
           image: Assets.imagesPageViewItem1Image,
           backgroundImage: Assets.imagesPageViewItem1BackgroundImage,
           title: const Row(
@@ -48,7 +48,7 @@ class OnBoardingPageView extends StatelessWidget {
               'اكتشف تجربة تسوق فريدة مع FruitHUB. استكشف مجموعتنا الواسعة من الفواكه الطازجة الممتازة واحصل على أفضل العروض والجودة العالية.',
         ),
         PageViewItem(
-            isVisible: controller.page!.round() != 0,
+            isVisible: (controller.hasClients? controller.page!.round():0) != 0,
             image: Assets.imagesPageViewItem2Image,
             backgroundImage: Assets.imagesPageViewItem2BackgroundImage,
             title: const Text(
