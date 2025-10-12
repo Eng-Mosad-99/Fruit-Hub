@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:fruit_hub/core/utils/app_colors.dart';
+import 'package:fruit_hub/core/utils/app_text_styles.dart';
 import 'package:fruit_hub/features/on_boarding/presentation/widgets/page_view_item.dart';
 
 import '../../../../core/utils/app_images.dart';
@@ -12,34 +14,27 @@ class OnBoardingPageView extends StatelessWidget {
       controller: controller,
       children: [
         PageViewItem(
-          isVisible: controller.page!.round() == 0,
+          isVisible:
+              (controller.hasClients ? controller.page!.round() : 0) == 0,
           image: Assets.imagesPageViewItem1Image,
           backgroundImage: Assets.imagesPageViewItem1BackgroundImage,
-          title: const Row(
+          title: Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Text(
                 'مرحبًا بك في',
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 30,
-                  fontWeight: FontWeight.bold,
+                style: TextStyles.bold23,
+              ),
+              Text(
+                ' HUB',
+                style: TextStyles.bold23.copyWith(
+                  color: AppColors.secondaryColor,
                 ),
               ),
               Text(
                 'Fruit',
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 30,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-              Text(
-                'HUB',
-                style: TextStyle(
-                  color: Color(0xFFFFC107),
-                  fontSize: 30,
-                  fontWeight: FontWeight.bold,
+                style: TextStyles.bold23.copyWith(
+                  color: AppColors.primaryColor,
                 ),
               ),
             ],
@@ -48,7 +43,8 @@ class OnBoardingPageView extends StatelessWidget {
               'اكتشف تجربة تسوق فريدة مع FruitHUB. استكشف مجموعتنا الواسعة من الفواكه الطازجة الممتازة واحصل على أفضل العروض والجودة العالية.',
         ),
         PageViewItem(
-            isVisible: controller.page!.round() != 0,
+            isVisible:
+                (controller.hasClients ? controller.page!.round() : 0) != 0,
             image: Assets.imagesPageViewItem2Image,
             backgroundImage: Assets.imagesPageViewItem2BackgroundImage,
             title: const Text(
