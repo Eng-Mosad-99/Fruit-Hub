@@ -32,7 +32,9 @@ class SocialLogin extends StatelessWidget {
               const Spacer(),
               Text(
                 title,
-                style: TextStyles.semiBold16,
+                style: TextStyles.semiBold16.copyWith(
+                  color: Colors.black,
+                ),
               ),
               const Spacer(),
             ],
