@@ -5,7 +5,7 @@ import 'package:fruit_hub/features/auth/domain/repos/auth_repo.dart';
 
 class AuthRepoImpl  extends AuthRepo{
   @override
-  Future<Either<Failure, UserEntity>> createUserWithEmailAndPassword({required String email, required String password, required String name}) {
+  Future<Either<Failure, UserEntity>> createUserWithEmailAndPassword({required String email, required String password}) {
     // TODO: implement createUserWithEmailAndPassword
     throw UnimplementedError();
   }
