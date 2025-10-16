@@ -34,7 +34,7 @@ class FirebaseAuthService {
       case 'invalid-email':
         return CustomException(message: 'Invalid email address.');
       default:
-        return CustomException(message: e.message ?? 'Authentication failed.');
+        return CustomException(message: e.message ?? 'An Error Occurred.Please try again later.');
     }
   }
 }
