@@ -27,7 +27,7 @@ class AuthRepoImpl extends AuthRepo {
     } catch (e) {
       return left(
         const ServerFailure(
-          'An Error Occurred.Please try again later.',
+          'لقد حدث خطأ ما يرجي المحاولة مرة اخري',
         ),
       );
     }

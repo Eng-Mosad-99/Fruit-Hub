@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:fruit_hub/core/errors/exceptions.dart';
 
@@ -22,11 +24,13 @@ class FirebaseAuthService {
 
   
   CustomException _handleFirebaseAuthException(FirebaseAuthException e) {
+    log(e.message!);
     switch (e.code) {
+      
       case 'weak-password':
-        return CustomException(message: 'Password is too weak.');
+        return CustomException(message: 'كلمة المرور ضعيفة');
       case 'email-already-in-use':
-        return CustomException(message: 'Email is already in use.');
+        return CustomException(message: 'لقد قمت بالتسجيل مسبقا يرجي تسجيل الدخول ');
       case 'user-not-found':
         return CustomException(message: 'No user found with this email.');
       case 'wrong-password':
@@ -34,7 +38,7 @@ class FirebaseAuthService {
       case 'invalid-email':
         return CustomException(message: 'Invalid email address.');
       default:
-        return CustomException(message: e.message ?? 'An Error Occurred.Please try again later.');
+        return CustomException(message: e.message ?? 'لقد حدث خطأ ما يرجي المحاولة مرة اخري');
     }
   }
 }
