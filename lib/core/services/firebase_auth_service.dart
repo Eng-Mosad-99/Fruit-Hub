@@ -2,6 +2,7 @@ import 'dart:developer';
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:fruit_hub/core/errors/exceptions.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 
 class FirebaseAuthService {
   Future<User> createUserWithEmailAndPassword(
@@ -44,9 +45,9 @@ class FirebaseAuthService {
         throw CustomException(message: 'لا يوجد مستخدم بهذا البريد الإلكتروني');
       } else if (e.code == 'wrong-password') {
         throw CustomException(message: 'كلمة المرور غير صحيحة');
-      }else if( e.code == 'network-request-failed'){
+      } else if (e.code == 'network-request-failed') {
         throw CustomException(message: 'يرجي التحقق من اتصالك بالانترنت');
-      }else if(e.code == 'invalid-credential'){
+      } else if (e.code == 'invalid-credential') {
         throw CustomException(message: 'بيانات تسجيل الدخول غير صحيحة');
       } else {
         log('Exception In FirebaseAuthException.SignInWithEmailAndPassword: ${e.toString()} and code ${e.code}');
@@ -56,5 +57,27 @@ class FirebaseAuthService {
       log('Exception In FirebaseAuthException.SignInWithEmailAndPassword: ${e.toString()}');
       throw CustomException(message: e.toString());
     }
+  }
+
+  // Future<UserCredential> signInWithGoogle() async {
+  //   final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
+  //   final GoogleSignInAuthentication? googleAuth =
+  //       await googleUser?.authentication;
+  //   final credential = GoogleAuthProvider.credential(
+  //     accessToken: googleAuth?.accessToken,
+  //     idToken: googleAuth?.idToken,
+  //   );
+  //   return await FirebaseAuth.instance.signInWithCredential(credential);
+  // }
+  Future<User> signInWithGoogle() async {
+    final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
+    final GoogleSignInAuthentication? googleAuth =
+        await googleUser?.authentication;
+    final credential = GoogleAuthProvider.credential(
+      accessToken: googleAuth?.accessToken,
+      idToken: googleAuth?.idToken,
+    );
+    //! علشان لو انا محتاج اليوزر
+    return (await FirebaseAuth.instance.signInWithCredential(credential)).user!;
   }
 }
