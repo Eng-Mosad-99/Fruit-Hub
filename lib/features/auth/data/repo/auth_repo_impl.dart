@@ -7,6 +7,7 @@ import 'package:fruit_hub/core/services/firebase_auth_service.dart';
 import 'package:fruit_hub/features/auth/data/models/user_model.dart';
 import 'package:fruit_hub/features/auth/domain/enitites/user_entity.dart';
 import 'package:fruit_hub/features/auth/domain/repos/auth_repo.dart';
+import 'package:sign_in_with_apple/sign_in_with_apple.dart';
 
 class AuthRepoImpl extends AuthRepo {
   final FirebaseAuthService firebaseAuthService;
@@ -83,6 +84,22 @@ class AuthRepoImpl extends AuthRepo {
       );
     } catch (e) {
       log('Exception In AuthRepoImpl.SignInWithFacebook: ${e.toString()}');
+      return left(
+        const ServerFailure(
+          'لقد حدث خطأ ما يرجي المحاولة مرة اخري',
+        ),
+      );
+    }
+  }
+  @override
+  Future<Either<Failure, UserEntity>> signInWithApple() async {
+    try {
+      final user = await firebaseAuthService.signInWithApple();
+      return right(
+        UserModel.fromFirebaseUser(user),
+      );
+    } catch (e) {
+      log('Exception In AuthRepoImpl.SignInWithApple: ${e.toString()}');
       return left(
         const ServerFailure(
           'لقد حدث خطأ ما يرجي المحاولة مرة اخري',
