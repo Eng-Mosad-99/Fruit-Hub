@@ -1,5 +1,6 @@
 import 'dart:developer';
 import 'package:dartz/dartz.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:fruits_ecommerce_app/core/errors/failures.dart';
 import 'package:fruits_ecommerce_app/core/services/database_service.dart';
 import 'package:fruits_ecommerce_app/core/utils/backend_endpoints.dart';
@@ -22,8 +23,9 @@ class AuthRepoImpl implements AuthRepo {
     required String password,
     required String name,
   }) async {
+    User? user;
     try {
-      final user = await firebaseAuthService.createUserWithEmailAndPassword(
+      user = await firebaseAuthService.createUserWithEmailAndPassword(
         email: email,
         password: password,
       );
@@ -31,8 +33,14 @@ class AuthRepoImpl implements AuthRepo {
       addUserData(user: userModel);
       return Right(userModel);
     } on CustomException catch (e) {
+      if (user != null) {
+        await firebaseAuthService.deleteUser();
+      }
       return Left(ServerFailure(e.message));
     } catch (e) {
+      if (user != null) {
+        await firebaseAuthService.deleteUser();
+      }
       return Left(
         ServerFailure(
           'An unknown error occurred in createUserWithEmailAndPassword ==> ${e.toString()}',
