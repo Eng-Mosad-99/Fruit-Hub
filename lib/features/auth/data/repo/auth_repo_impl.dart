@@ -29,13 +29,11 @@ class AuthRepoImpl implements AuthRepo {
         email: email,
         password: password,
       );
-      UserModel userModel = UserModel.fromFirebaseUser(user);
-      addUserData(user: userModel);
-      return Right(userModel);
+      var userEntity = UserEntity(uId: user.uid, name: name, email: email);
+      addUserData(user: userEntity);
+      return Right(userEntity);
     } on CustomException catch (e) {
-      if (user != null) {
-        await firebaseAuthService.deleteUser();
-      }
+      await deleteUser(user);
       return Left(ServerFailure(e.message));
     } catch (e) {
       if (user != null) {
@@ -46,6 +44,12 @@ class AuthRepoImpl implements AuthRepo {
           'An unknown error occurred in createUserWithEmailAndPassword ==> ${e.toString()}',
         ),
       );
+    }
+  }
+
+  Future<void> deleteUser(User? user) async {
+    if (user != null) {
+      await firebaseAuthService.deleteUser();
     }
   }
 
@@ -74,13 +78,17 @@ class AuthRepoImpl implements AuthRepo {
 
   @override
   Future<Either<Failures, UserEntity>> signInWithGoogle() async {
+    User? user;
     try {
-      final user = await firebaseAuthService.signInWithGoogle();
+       user = await firebaseAuthService.signInWithGoogle();
       UserModel userModel = UserModel.fromFirebaseUser(user);
+      addUserData(user: userModel);
       return Right(userModel);
     } on CustomException catch (e) {
+      await deleteUser(user);
       return Left(ServerFailure(e.message));
     } catch (e) {
+      await deleteUser(user);
       return Left(
         ServerFailure(
           'An unknown error occurred in signInWithGoogle ==> ${e.toString()}',
@@ -91,15 +99,19 @@ class AuthRepoImpl implements AuthRepo {
 
   @override
   Future<Either<Failures, UserEntity>> signInWithFacebook() async {
+    User? user;
     try {
-      final user = await firebaseAuthService.signInWithFacebook();
+       user = await firebaseAuthService.signInWithFacebook();
       UserModel userModel = UserModel.fromFirebaseUser(user);
+      addUserData(user: userModel);
       return Right(userModel);
     } on CustomException catch (e) {
       log('Custom Exception ==> ${e.message}');
+      await deleteUser(user);
       return Left(ServerFailure(e.message));
     } catch (e) {
       log('Error in Facebook Signin ==> ${e.toString()}');
+      await deleteUser(user);
       return Left(
         ServerFailure(
           'An unknown error occurred in signInWithFacebook ==> ${e.toString()}',
@@ -110,14 +122,19 @@ class AuthRepoImpl implements AuthRepo {
 
   @override
   Future<Either<Failures, UserEntity>> signInWithApple() async {
+    User? user;
     try {
-      final user = await firebaseAuthService.signInWithApple();
+      user = await firebaseAuthService.signInWithApple();
       UserModel userModel = UserModel.fromFirebaseUser(user);
+      addUserData(user: userModel);
       return Right(userModel);
     } on CustomException catch (e) {
+      log('Custom Exception in signInWithApple ==> ${e.message}');
+     await deleteUser(user);
       return Left(ServerFailure(e.message));
     } catch (e) {
       log('Error in signInWithApple ==> ${e.toString()}');
+      await deleteUser(user);
       return Left(
         ServerFailure(
           'An unknown error occurred in signInWithApple ==> ${e.toString()}',
