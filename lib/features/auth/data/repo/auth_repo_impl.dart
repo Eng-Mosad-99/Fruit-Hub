@@ -30,7 +30,7 @@ class AuthRepoImpl implements AuthRepo {
         password: password,
       );
       var userEntity = UserEntity(uId: user.uid, name: name, email: email);
-      addUserData(user: userEntity);
+      await addUserData(user: userEntity);
       return Right(userEntity);
     } on CustomException catch (e) {
       await deleteUser(user);
@@ -63,11 +63,13 @@ class AuthRepoImpl implements AuthRepo {
         email: email,
         password: password,
       );
-      UserModel userModel = UserModel.fromFirebaseUser(user);
-      return Right(userModel);
+      var userEntity = await getUserData(uId: user.uid);
+      return Right(userEntity);
     } on CustomException catch (e) {
+      log('Custom Exception in signInWithEmailAndPassword ==> ${e.message}');
       return Left(ServerFailure(e.message));
     } catch (e) {
+      log('Error in signInWithEmailAndPassword ==> ${e.toString()}');
       return Left(
         ServerFailure(
           'An unknown error occurred in signInWithEmailAndPassword ==> ${e.toString()}',
@@ -80,7 +82,7 @@ class AuthRepoImpl implements AuthRepo {
   Future<Either<Failures, UserEntity>> signInWithGoogle() async {
     User? user;
     try {
-       user = await firebaseAuthService.signInWithGoogle();
+      user = await firebaseAuthService.signInWithGoogle();
       UserModel userModel = UserModel.fromFirebaseUser(user);
       addUserData(user: userModel);
       return Right(userModel);
@@ -101,7 +103,7 @@ class AuthRepoImpl implements AuthRepo {
   Future<Either<Failures, UserEntity>> signInWithFacebook() async {
     User? user;
     try {
-       user = await firebaseAuthService.signInWithFacebook();
+      user = await firebaseAuthService.signInWithFacebook();
       UserModel userModel = UserModel.fromFirebaseUser(user);
       addUserData(user: userModel);
       return Right(userModel);
@@ -130,7 +132,7 @@ class AuthRepoImpl implements AuthRepo {
       return Right(userModel);
     } on CustomException catch (e) {
       log('Custom Exception in signInWithApple ==> ${e.message}');
-     await deleteUser(user);
+      await deleteUser(user);
       return Left(ServerFailure(e.message));
     } catch (e) {
       log('Error in signInWithApple ==> ${e.toString()}');
@@ -148,6 +150,16 @@ class AuthRepoImpl implements AuthRepo {
     await databaseService.addData(
       path: BackendEndpoints.addUserData,
       data: user.toMap(),
+      documentID: user.uId,
     );
+  }
+
+  @override
+  Future<UserEntity> getUserData({required String uId}) async {
+    var userData = await databaseService.getData(
+      path: BackendEndpoints.getUserData,
+      documentID: uId,
+    );
+    return UserModel.fromJson(userData);
   }
 }

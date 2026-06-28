@@ -31,6 +31,8 @@ class FirebaseAuthService {
       } else if (e.code == 'email-already-in-use') {
         throw CustomException(
             message: 'لقد قمت بالتسجيل مسبقاً. الرجاء تسجيل الدخول.');
+      } else if (e.code == 'unknown') {
+        throw CustomException(message: e.message??'An internal error has occurred.unexpected end of stream on com.android.okhttp.Address@7ab0d53f');
       } else if (e.code == 'network-request-failed') {
         throw CustomException(message: 'تاكد من اتصالك بالانترنت.');
       } else {
