@@ -84,12 +84,23 @@ class AuthRepoImpl implements AuthRepo {
     try {
       user = await firebaseAuthService.signInWithGoogle();
       UserModel userModel = UserModel.fromFirebaseUser(user);
-      addUserData(user: userModel);
+      var isUserExists = await databaseService.checkIfDataExists(
+        path: BackendEndpoints.isUserExists,
+        documentID: user.uid,
+      );
+
+      if (isUserExists) {
+        await getUserData(uId: user.uid);
+      } else {
+        await addUserData(user: userModel);
+      }
       return Right(userModel);
     } on CustomException catch (e) {
+      log('Custom Exception in signInWithGoogle ==> ${e.message}');
       await deleteUser(user);
       return Left(ServerFailure(e.message));
     } catch (e) {
+      log('Error in signInWithGoogle ==> ${e.toString()}');
       await deleteUser(user);
       return Left(
         ServerFailure(
@@ -105,14 +116,22 @@ class AuthRepoImpl implements AuthRepo {
     try {
       user = await firebaseAuthService.signInWithFacebook();
       UserModel userModel = UserModel.fromFirebaseUser(user);
-      addUserData(user: userModel);
+      var isUserExists = await databaseService.checkIfDataExists(
+        path: BackendEndpoints.isUserExists,
+        documentID: user.uid,
+      );
+      if (isUserExists) {
+        await getUserData(uId: user.uid);
+      } else {
+        await addUserData(user: userModel);
+      }
       return Right(userModel);
     } on CustomException catch (e) {
-      log('Custom Exception ==> ${e.message}');
+      log('Custom Exception in signInWithFacebook ==> ${e.message}');
       await deleteUser(user);
       return Left(ServerFailure(e.message));
     } catch (e) {
-      log('Error in Facebook Signin ==> ${e.toString()}');
+      log('Error in signInWithFacebook ==> ${e.toString()}');
       await deleteUser(user);
       return Left(
         ServerFailure(
@@ -128,7 +147,16 @@ class AuthRepoImpl implements AuthRepo {
     try {
       user = await firebaseAuthService.signInWithApple();
       UserModel userModel = UserModel.fromFirebaseUser(user);
-      addUserData(user: userModel);
+      var isUserExists = await databaseService.checkIfDataExists(
+        path: BackendEndpoints.isUserExists,
+        documentID: user.uid,
+      );
+
+      if (isUserExists) {
+        await getUserData(uId: user.uid);
+      } else {
+        await addUserData(user: userModel);
+      }
       return Right(userModel);
     } on CustomException catch (e) {
       log('Custom Exception in signInWithApple ==> ${e.message}');
